@@ -1,5 +1,5 @@
 import os
-from kalshi_python import ExchangeClient
+from kalshi_python import Configuration, KalshiClient
 from scipy.stats import norm
 import pandas as pd
 
@@ -9,7 +9,7 @@ email = 'your_email@example.com'  # Or use token directly
 password = 'your_password'
 token = 'your_api_token_if_preferred'  # Optional, generate via login
 
-client = ExchangeClient(exchange_api_base=api_base, email=email, password=password)
+client = KalshiClient(exchange_api_base=api_base, email=email, password=password)
 
 # Bankroll (update manually after trades)
 bankroll = 90.0
