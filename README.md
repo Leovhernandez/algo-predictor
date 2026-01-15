@@ -15,7 +15,7 @@ Before starting, ensure you have:
 A Windows computer.
 Internet access for downloads.
 
-Step-by-Step Setup Instructions
+Step-by-Step Setup Instructions (NOTE: these instructions assume you are using a Windows machine)
 Step 1: Install Python
 Python is the core interpreter. We need version 3.14.2 (a specific, stable release, verified as released on December 5, 2025).
 
@@ -86,11 +86,18 @@ Now, open app.py. Any wavy lines (warnings) under imports should disappear. If n
 Step 8: Run Your Code
 
 In VS Code, open the Terminal: Ctrl+` (backtick key).
-If not already, activate venv: Type venv\Scripts\activate.
+If not already, activate venv: Type venv\Scripts\activate
+NOTE: If you run into an issue where the above command throws an error like "cannot be loaded because running scripts is 
+disabled on this system", do the following to fix this error:
+    - Enter the following command: Get-ExecutionPolicy
+        - if output says Restricted, then enter the following command: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+        - Enter the Get-ExecutionPolicy command again and the output should be "RemoteSigned" now granting you access to activate the virtual environment
+        - Finally, activate venv by typing and entering the following command again: venv\Scripts\activate
+        - The virtual environment will be activated if you see (venv) appear before the filepath.
 Run: Type python app.py and press Enter.
 
 
-If errors occur (e.g., about imports), double-check the interpreter selection and installations.
+If other errors occur (e.g., about imports), double-check the interpreter selection and installations.
 
 Step 9: Deactivate and Clean Up
 
