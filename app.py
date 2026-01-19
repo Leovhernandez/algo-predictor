@@ -1,3 +1,6 @@
+# - Currently have 3 prediction market accounts: Kalshi, Polymaret, and DKPredictions
+#   - To-Do: Regarding Public APIs, Kalshi and Polymarket have one, DKPredictions will likely need some extra tools to scrape data.
+
 import os
 from kalshi_python import Configuration, KalshiClient
 from scipy.stats import norm
@@ -14,11 +17,12 @@ client = KalshiClient(exchange_api_base=api_base, token=token)
 # Bankroll (update manually after trades)
 bankroll = 90.0
 
-# Fractional Kelly factor (1/4 = 0.25)
-kelly_fraction = 0.25
+# Fractional Kelly factor (1/4 = 0.25) or full Kelly = 1.00
+kelly_fraction = 1.00
 
 # Minimum EV threshold
-min_ev = 0.05
+# Account for slippage here? 3% was decided before adding any slippage adjustments.
+min_ev = 0.03  # 3% edge
 
 # Target events (update with current tickers from Kalshi)
 target_event_groups = ['JOBS-26JAN', 'CPI-26JAN', 'FED-26JAN']  # Example tickers; fetch dynamically below
@@ -53,8 +57,8 @@ for _, market in econ_markets.iterrows():
     yes_price = market['yes_bid'] / 100  # Prices in cents
     no_price = market['no_bid'] / 100
     volume = market['volume']
-    
-    if volume < 10000:  # Liquidity filter
+
+    if ((volume < 10000) or (volume > 100000)) :  # min-max liquidity filter in USD
         continue
     
     # Parse for jobs thresholds (example logic; customize per event)
@@ -92,3 +96,9 @@ else:
     print("No edges found today.")
 
 # To place (uncomment after review): client.create_order(ticker=ticker, side=side.lower(), count=contracts, price=int(price*100), type='limit')
+# To-Do: stop losses, category diversification, dynamic bankroll updates, monte carlo simulations, logging/tracking trades
+# Note: This is a simplified example. Real implementations should include error handling, logging, and more robust data fetching/parsing.
+# - Is it possible to consider adjusting minimum EV threshold based on market volatility, liquidity, or other factors to optimize trade selection?
+# Add correlation matrix analysis between different economic events to identify potential hedging opportunities within the prediction markets.
+#   - How much do the chosen categories and their underlying economic indicators correlate with each other?
+#   - Can we use this information to diversify our bets and reduce overall risk? Consider risk tolerance here
