@@ -2,3 +2,4 @@ venv/
 API/
 CLAUDE.md
 .claude/
+__pycache__/
